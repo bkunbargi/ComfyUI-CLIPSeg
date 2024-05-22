@@ -128,7 +128,10 @@ class CLIPSeg:
         with torch.no_grad():
             outputs = model(**input_prc)
         
-        tensor = torch.sigmoid(outputs[0]) # get the mask
+        # tensor = torch.sigmoid(outputs[0]) # get the mask
+        
+        preds = outputs.logits.unsqueeze(1)
+        tensor = torch.sigmoid(preds[0][0])
         
         # Apply a threshold to the original tensor to cut off low values
         thresh = threshold
